@@ -9,11 +9,11 @@ public class ThemeParkTracker {
     }
 
     public void addRide(Ride ride) {
-        rides.set(rides.size(), ride);
+        rides.add(rides.size(), ride);
     }
 
     public Ride getRide(int index) {
-        if (index > rides.size()) {
+        if (index > rides.size() - 1) {
             return null;
         }
 
@@ -21,8 +21,8 @@ public class ThemeParkTracker {
     }
 
     public void removeClosedRides() {
-        for (int i = 0; i < rides.size(); i++) {
-            if (rides.get(i).getStatus() == "closed") {
+        for (int i = rides.size() - 1; i >= 0; i--) {
+            if (rides.get(i).getStatus().equals("closed")) {
                 rides.remove(i);
             }
         }
@@ -30,53 +30,53 @@ public class ThemeParkTracker {
 
     public void printRide(String name) {
         for (Ride ride : rides) {
-            if (ride.getName() == name) {
+            if (ride.getName().equals(name)) {
                 System.out.println(ride);
             }
         }
     }
 
     public void removeRide(int index) {
-        if (index >= 0 && index <= rides.size()) {
+        if (index >= 0 && index < rides.size()) {
             rides.remove(index);
         }
     }
 
     public void printAllRides() {
-        for (int i = 0; i < rides.size() - 1; i++) {
-            System.out.println(rides.get(i));
+        for (Ride ride : rides) {
+            System.out.println(ride);
         }
     }
 
     public void sortByWaitTime() {
 
-        for (int i = 0; i < rides.size(); i++) {
+        for (int i = 0; i < rides.size() - 1; i++) {
 
             for (int j = i + 1; j < rides.size(); j++) {
 
                 if (rides.get(i).getWaitTime() > rides.get(j).getWaitTime()) {
 
-                    int temp = rides.get(i).getWaitTime();
+                    Ride temp = rides.get(i);
 
-                    rides.get(i).setWaitTime(rides.get(j).getWaitTime());
+                    rides.set(i, rides.get(j));
 
-                    rides.get(j).setWaitTime(temp);
+                    rides.set(j, temp);
                 }
             }
         }
     }
 
     public String findRideStatus(String rideName) {
-
-        for (Ride ride : rides) {
-
-            if (ride.getName() == rideName) {
-                return ride.getStatus();
-            } else {
-                return "Ride not found";
+        if(rides.isEmpty()){
+            return "No rides in tracker";
+        }else {
+            for (int i = rides.size() - 1; i >= 0; i--) {
+                if (rides.get(i).getName().equals(rideName)) {
+                    return rides.get(i).getStatus();
+                }
             }
-        }
-
-        return "No rides in tracker";
+        }return "Ride not found";
     }
+
+    public int size(){return rides.size();}
 }
